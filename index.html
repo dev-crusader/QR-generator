@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width; initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <body>
+    <h2>QR code generator</h2>
+    <div class="container">
+      <input
+        type="text"
+        id="text-input"
+        placeholder="Enter URL or text"
+      /><br />
+      <button class="button" id="generate-btn">Generate QR Code</button>
+      <button class="button" id="download-btn" disabled>Download QR</button>
+    </div>
+    <div id="qrcode-container" class="qrcode-container">
+      <div id="qrcode"></div>
+      <p class="scan-text" id="preTxt">SCAN ME</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
