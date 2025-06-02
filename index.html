@@ -19,8 +19,8 @@
     sizes="16x16"
     href="./images/favicon-16x16.png"
   />
-  <link rel="manifest" href="/site.webmanifest" />
   <link rel="stylesheet" href="styles.css" />
+
   <body>
     <h2>QR code generator</h2>
     <div class="container">
@@ -30,14 +30,17 @@
         placeholder="Enter URL or text"
       /><br />
       <button class="button" id="generate-btn">Generate QR Code</button>
-      <button class="button" id="download-btn" disabled>Download QR</button>
-    </div>
-    <div id="qrcode-container" class="qrcode-container">
-      <div id="qrcode"></div>
-      <p class="scan-text" id="preTxt">SCAN ME</p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <div class="capsule">
+      <div id="qrcode-container" class="qrcode-container">
+        <img id="qrImage" src="./images/default.svg" alt="QR Code" />
+        <p class="scan-text" id="preTxt">SCAN ME</p>
+      </div>
+      <button class="button" id="download-btn" disabled>Download QR</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="script.js"></script>
   </body>
