@@ -19,27 +19,38 @@
     sizes="16x16"
     href="./images/favicon-16x16.png"
   />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="styles.css" />
 
   <body>
-    <h2>QR code generator</h2>
-    <div class="container">
-      <input
-        type="text"
-        id="text-input"
-        placeholder="Enter URL or text"
-      /><br />
-      <button class="button" id="generate-btn">Generate QR Code</button>
-    </div>
-
-    <div class="capsule">
-      <div id="qrcode-container" class="qrcode-container">
-        <img id="qrImage" src="./images/default.svg" alt="QR Code" />
-        <p class="scan-text" id="preTxt">SCAN ME</p>
+    <div class="row-wise-split">
+      <div class="container">
+        <h2>QR code generator</h2>
+        <p>Enter URL or text</p>
+        <input
+          type="text"
+          id="text-input"
+          placeholder="https://example.com or Text here.."
+        /><br />
+        <p style="font-size: x-small; color: grey">
+          Your QR will open this URL or text
+        </p>
+        <button class="button" id="generate-btn">Generate QR Code</button>
       </div>
-      <button class="button" id="download-btn" disabled>Download QR</button>
-    </div>
 
+      <div class="capsule">
+        <div id="qrcode-container" class="qrcode-container">
+          <img id="qrImage" src="./images/default.svg" alt="QR Code" />
+          <p class="scan-text" id="preTxt">SCAN ME</p>
+        </div>
+        <button class="button" id="download-btn" disabled>Download QR</button>
+      </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="script.js"></script>

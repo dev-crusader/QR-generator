@@ -4,9 +4,7 @@ const inputField = document.getElementById("text-input");
 const qrImage = document.getElementById("qrImage");
 const sizeInput = document.getElementById("sizeInput");
 
-console.log(qrImage.clientWidth);
 let size = document.getElementById("qrcode-container").clientWidth;
-console.log(size);
 
 generateBtn.onclick = function () {
   const text = inputField.value.trim();
