@@ -19,6 +19,10 @@ body {
   font-size: 1.2vw;
 }
 
+p {
+  margin: 1em 0px 0.5em;
+}
+
 .row-wise-split {
   display: flex;
   flex-direction: row;
@@ -34,26 +38,32 @@ body {
 .container {
   width: 50%;
   max-width: 50%;
-  padding: 3rem;
+  padding: 2rem;
   padding-bottom: 1rem;
   height: auto;
 }
 
-#text-input {
-  height: 40px;
-  width: 80%;
+input[type="text"] {
+  box-shadow: 0 0 8px rgba(2, 74, 242, 0.2);
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #7a9e8e;
   border-radius: 8px;
-  border-color: #7a9e8e;
-  border-width: 0.1px;
-  padding-left: 10px;
-  font-size: medium;
-  margin-top: 15px;
-  margin-bottom: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+  outline: none;
 }
 
 input::placeholder {
   color: #999;
-  font-size: 15px;
+  font-size: 1rem;
   opacity: 0.9;
 }
 
@@ -62,17 +72,19 @@ input::placeholder {
   border: none;
   color: white;
   padding: clamp(10px, 1.2vw, 14px);
-  font-size: clamp(10px, 1.4vw, 16px);
+  font-size: clamp(11px, 1.4vw, 16px);
   text-align: center;
   border-radius: 10px;
   cursor: pointer;
-  margin: 2em 0px;
+  margin-bottom: 1.5em;
   min-width: 140px;
   max-width: 220px;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .button:hover {
   background-color: #4a6d73;
+  transform: scale(1.05);
 }
 
 #download-btn:disabled {
@@ -84,9 +96,32 @@ input::placeholder {
   cursor: pointer;
 }
 
+.back-section,
+.fore-section {
+  display: flex;
+  flex-direction: row;
+}
+
+.color-label {
+  font-size: 0.9rem;
+}
+
+.size-inputs {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  margin-bottom: 0.9rem;
+}
+
+label {
+  font-size: 0.9rem;
+  color: #333;
+}
+
 #footnote {
   color: rgb(151, 151, 151);
   font-size: clamp(0.5em, 0.7vw, 0.8em);
+  margin-top: 0.2em;
 }
 
 .capsule {
@@ -196,5 +231,10 @@ input::placeholder {
   }
   .scan-text {
     font-size: clamp(0.9rem, 2.5vw, 1.5rem);
+  }
+
+  .size-inputs,
+  .margin-input {
+    flex-direction: column;
   }
 }
