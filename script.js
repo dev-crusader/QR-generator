@@ -2,52 +2,22 @@ const generateBtn = document.getElementById("generate-btn");
 const downloadBtn = document.getElementById("download-btn");
 const inputField = document.getElementById("text-input");
 const qrImage = document.getElementById("qrImage");
-const sizeInput = document.getElementById("sizeInput");
 const fontFamily = "Manrope, Segoe UI, Tahoma, Geneva, Verdana, sans-serif";
 
-let size = document.getElementById("qrcode-container").clientWidth;
+const size = document.getElementById("size-input");
+const margin = document.getElementById("margin-input");
+const bgColorInput = document.getElementById("bgcolor-pick");
+const bgTextInput = document.getElementById("bg-color");
+const fgColorInput = document.getElementById("forecolor-pick");
+const fgTextInput = document.getElementById("fore-color");
 
-// generateBtn.onclick = function () {
-//   const text = inputField.value.trim();
-//   if (!text) {
-//     alert("Please enter some text or URL");
-//     return;
-//   }
-//   QRCode.toDataURL(text, { width: size, margin: 0 }, function (err, url) {
-//     if (err) {
-//       console.error(err);
-//       return;
-//     }
-//     qrImage.classList.remove("qr-fade-in");
+bgColorInput.addEventListener("change", () => {
+  bgTextInput.value = bgColorInput.value;
+});
 
-//     // Force reflow (so the browser registers the class removal)
-//     void qrImage.offsetWidth;
-
-//     // Add the class again to animate
-//     qrImage.classList.add("qr-fade-in");
-//     qrImage.src = url;
-//     qrImage.style.opacity = 1;
-//     downloadBtn.disabled = false;
-//   });
-// };
-
-// downloadBtn.onclick = function () {
-//   // const downloadSize = parseInt(sizeInput.value) || 256;
-
-//   const data = inputField.value.trim();
-
-//   // Generate QR code at user-specified size for download
-//   QRCode.toDataURL(data, { width: 800, margin: 0 }).then((url) => {
-//     fetch(url)
-//       .then((res) => res.blob())
-//       .then((blob) => {
-//         const link = document.createElement("a");
-//         link.href = URL.createObjectURL(blob);
-//         link.download = `qrcode_${Date.now()}.png`;
-//         link.click();
-//       });
-//   });
-// };
+fgColorInput.addEventListener("change", () => {
+  fgTextInput.value = fgColorInput.value;
+});
 
 generateBtn.onclick = function () {
   const text = inputField.value.trim();
@@ -55,22 +25,67 @@ generateBtn.onclick = function () {
     alert("Please enter some text or URL");
     return;
   }
-  QRCode.toDataURL(text, { width: 800, margin: 0 }).then((url) => {
-    window.generatedImageDataUrl = null;
+  defaultInit();
+  const options = {
+    color: {
+      dark: fgTextInput.value,
+      light: bgTextInput.value,
+    },
+    margin: margin.value,
+    width: size.value,
+    errorCorrectionLevel: "H",
+  };
 
-    generateHighResQR(url, (highResDataUrl) => {
-      window.generatedImageDataUrl = highResDataUrl;
-      qrImage.classList.remove("qr-fade-in");
+  QRCode.toDataURL(text, options).then((url) => {
+    qrImage.classList.remove("qr-fade-in");
+    window.generatedImageDataUrl = url;
+    void qrImage.offsetWidth;
 
-      void qrImage.offsetWidth;
-
-      qrImage.classList.add("qr-fade-in");
-      qrImage.src = highResDataUrl;
-      qrImage.style.opacity = 1;
-      downloadBtn.disabled = false;
-    });
+    qrImage.classList.add("qr-fade-in");
+    qrImage.src = url;
+    qrImage.style.opacity = 1;
+    downloadBtn.disabled = false;
   });
 };
+
+function defaultInit() {
+  if (!bgTextInput.value) {
+    bgTextInput.value = "#ffffff";
+  }
+
+  if (!fgTextInput.value) {
+    fgTextInput.value = "#000000";
+  }
+  if (!size.value) {
+    size.value = 256;
+  }
+  if (!margin.value) {
+    margin.value = 0;
+  }
+}
+
+size.addEventListener("blur", () => {
+  const value = size.value.trim();
+  if (value != "" && isNaN(value)) {
+    alert("Please enter a valid number.");
+  }
+});
+// QRCode.toDataURL(text, options).then((url) => {
+//   window.generatedImageDataUrl = null;
+
+//   generateHighResQR(url, (highResDataUrl) => {
+//     window.generatedImageDataUrl = highResDataUrl;
+//     qrImage.classList.remove("qr-fade-in");
+
+//     void qrImage.offsetWidth;
+
+//     qrImage.classList.add("qr-fade-in");
+//     qrImage.src = highResDataUrl;
+//     qrImage.style.opacity = 1;
+//     downloadBtn.disabled = false;
+//   });
+// });
+// };
 
 function generateHighResQR(data, callback) {
   const qrImage = new Image();
