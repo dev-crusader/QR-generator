@@ -19,6 +19,20 @@ fgColorInput.addEventListener("change", () => {
   fgTextInput.value = fgColorInput.value;
 });
 
+size.addEventListener("blur", () => {
+  const message = validateInput(size, 100);
+  if (message) {
+    alert(message);
+  }
+});
+
+margin.addEventListener("blur", () => {
+  const message = validateInput(margin, 0);
+  if (message) {
+    alert(message);
+  }
+});
+
 generateBtn.onclick = function () {
   const text = inputField.value.trim();
   if (!text) {
@@ -26,6 +40,16 @@ generateBtn.onclick = function () {
     return;
   }
   defaultInit();
+  let sizeValid = validateInput(size, 100);
+  if (sizeValid !== "") {
+    alert(sizeValid);
+    return;
+  }
+  let marginValid = validateInput(margin, 0);
+  if (marginValid !== "") {
+    alert(marginValid);
+    return;
+  }
   const options = {
     color: {
       dark: fgTextInput.value,
@@ -64,57 +88,17 @@ function defaultInit() {
   }
 }
 
-size.addEventListener("blur", () => {
-  const value = size.value.trim();
-  if (value != "" && isNaN(value)) {
-    alert("Please enter a valid number.");
+function validateInput(ele, minm) {
+  const element = ele.value.trim();
+  let inp = minm == 0 ? "Margin" : "Size";
+  if (element != "" && isNaN(element)) {
+    return `Please enter a valid number for ${inp}.`;
   }
-});
-// QRCode.toDataURL(text, options).then((url) => {
-//   window.generatedImageDataUrl = null;
-
-//   generateHighResQR(url, (highResDataUrl) => {
-//     window.generatedImageDataUrl = highResDataUrl;
-//     qrImage.classList.remove("qr-fade-in");
-
-//     void qrImage.offsetWidth;
-
-//     qrImage.classList.add("qr-fade-in");
-//     qrImage.src = highResDataUrl;
-//     qrImage.style.opacity = 1;
-//     downloadBtn.disabled = false;
-//   });
-// });
-// };
-
-function generateHighResQR(data, callback) {
-  const qrImage = new Image();
-
-  qrImage.onload = () => {
-    const qrSize = 800; // high-res size
-    const textHeight = 50; // space for "Scan me"
-    const totalHeight = qrSize + textHeight;
-
-    const canvas = document.createElement("canvas");
-    canvas.width = qrSize;
-    canvas.height = totalHeight;
-    const ctx = canvas.getContext("2d");
-
-    ctx.fillStyle = "#fff";
-    ctx.fillRect(0, 0, qrSize, totalHeight);
-
-    ctx.drawImage(qrImage, 0, 0, qrSize, qrSize);
-
-    ctx.font = "30px Arial";
-    ctx.fillStyle = "black";
-    ctx.textAlign = "center";
-    ctx.fillText("Scan me", qrSize / 2, qrSize + 40);
-
-    const dataUrl = canvas.toDataURL("image/png");
-    callback(dataUrl);
-  };
-
-  qrImage.src = data;
+  let val = parseInt(element);
+  if (val < minm) {
+    return `${inp} atleast ${minm} expected`;
+  }
+  return "";
 }
 
 downloadBtn.onclick = () => {
