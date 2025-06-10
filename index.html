@@ -31,37 +31,70 @@
     <div class="row-wise-split">
       <div class="container">
         <h2>QR code generator</h2>
-        <p>Enter URL or text</p>
-        <input
-          type="text"
-          id="text-input"
-          placeholder="https://example.com or Text here.."
-        /><br />
-        <p id="footnote">Your QR will open this URL or text</p>
-
-        <div class="color-section">
-          <p class="color-label">Background Color:</p>
-          <div class="back-section">
-            <input type="text" id="bg-color" placeholder="#000000" />
-            <input type="color" id="bgcolor-pick" value="#ffffff" />
-          </div>
-
-          <p class="color-label">Foreground Color:</p>
-          <div class="fore-section">
-            <input type="text" id="fore-color" placeholder="#ffffff" />
-            <input type="color" id="forecolor-pick" value="#000000" />
-          </div>
+        <div class="tabs">
+          <div class="tab active" data-tab="url">URL</div>
+          <div class="tab" data-tab="wifi">Wi-Fi</div>
+          <div class="tab" data-tab="vcard">vCard</div>
         </div>
-        <br />
-
-        <div class="size-inputs">
-          <label for="size-input">Size:</label>
-          <input type="text" id="size-input" placeholder="200px" />
-          <label for="margin-input">Margin:</label>
-          <input type="text" id="margin-input" placeholder="2" />
+        <div id="url" class="tab-content active">
+          <p>Enter URL or text</p>
+          <input
+            type="text"
+            id="text-input"
+            placeholder="https://example.com or Text here.."
+          /><br />
+          <p id="footnote">Your QR will open this URL or text</p>
         </div>
-        <br />
 
+        <!-- Content for Wi-Fi -->
+        <div id="wifi" class="tab-content">
+          <label>SSID:</label>
+          <input type="text" id="wifi-ssid" placeholder="SSID" /><br />
+          <label>Password:</label>
+          <input type="text" id="wifi-pass" placeholder="Password" /><br />
+          <label>Security:</label>
+          <select id="wifi-security">
+            <option value="">Open</option>
+            <option value="WPA">WPA/WPA2</option>
+            <option value="WEP">WEP</option>
+          </select>
+        </div>
+        <!-- Content for V-card -->
+        <div id="vcard" class="tab-content">
+          <label>Name:</label>
+          <input type="text" id="vcard-name" placeholder="Full Name" /><br />
+          <label>Address:</label>
+          <input type="text" id="vcard-address" placeholder="Address" /><br />
+          <label>Phone:</label>
+          <input type="text" id="vcard-phone" placeholder="Phone" /><br />
+          <label>Email:</label>
+          <input type="text" id="vcard-email" placeholder="Email" />
+        </div>
+
+        <div class="shared-options">
+          <div class="color-section">
+            <p class="color-label">Background Color:</p>
+            <div class="back-section">
+              <input type="text" id="bg-color" placeholder="#000000" />
+              <input type="color" id="bgcolor-pick" value="#ffffff" />
+            </div>
+
+            <p class="color-label">Foreground Color:</p>
+            <div class="fore-section">
+              <input type="text" id="fore-color" placeholder="#ffffff" />
+              <input type="color" id="forecolor-pick" value="#000000" />
+            </div>
+          </div>
+          <br />
+
+          <div class="size-inputs">
+            <label for="size-input">Size:</label>
+            <input type="text" id="size-input" placeholder="200px" />
+            <label for="margin-input">Margin:</label>
+            <input type="text" id="margin-input" placeholder="2" />
+          </div>
+          <br />
+        </div>
         <div class="button-wrapper">
           <button class="button" id="generate-btn">Generate QR Code</button>
         </div>
