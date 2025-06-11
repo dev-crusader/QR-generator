@@ -54,22 +54,24 @@ p {
   border-radius: 0.2em;
   background: rgba(249, 250, 239, 0.472);
   margin-right: 0.5em;
-  font-size: medium;
+  font-size: 0.8em;
 }
 .tab.active {
-  background: #82da9c4e;
+  /* background: #b4eec532; */
+  background: #ffffffcb;
+  border: none;
   font-weight: bold;
 }
 
 .tab-content {
   display: none;
-  border: 1px solid #cccccc74;
   padding: 1em;
   margin-bottom: 1em;
 }
 
 .tab-content.active {
   display: block;
+  background-color: #ffffffff;
 }
 
 .container {
@@ -82,7 +84,7 @@ p {
 
 input[type="text"] {
   box-shadow: 0 0 8px rgba(2, 74, 242, 0.2);
-  width: 100%;
+  width: 70%;
   padding: 0.6rem;
   margin-top: 0.2rem;
   margin-bottom: 0.5rem;
@@ -90,6 +92,10 @@ input[type="text"] {
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]#text-input {
+  width: 100%;
 }
 
 input[type="text"]:focus {
@@ -177,7 +183,6 @@ input[type="color"] {
   display: flex;
   gap: 2em;
   align-items: center;
-  margin-bottom: 0.9rem;
 }
 
 #size-input,
@@ -212,7 +217,7 @@ label {
 #footnote {
   color: rgba(145, 145, 145, 0.778);
   font-size: clamp(0.5em, 0.7vw, 0.8em);
-  margin-top: 0.2em;
+  margin: 0.2em 0em;
 }
 
 .capsule {
