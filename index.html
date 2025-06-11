@@ -36,6 +36,7 @@
           <div class="tab" data-tab="wifi">Wi-Fi</div>
           <div class="tab" data-tab="vcard">vCard</div>
         </div>
+        <!-- Content for URL/Text -->
         <div id="url" class="tab-content active">
           <p>Enter URL or text</p>
           <input
@@ -153,9 +154,8 @@
       <div class="capsule">
         <div id="qrcode-container" class="qrcode-container">
           <img id="qrImage" src="./images/default.svg" alt="QR Code" />
-          <p class="scan-text" id="preTxt">SCAN ME</p>
+          <button class="button" id="download-btn" disabled>Download QR</button>
         </div>
-        <button class="button" id="download-btn" disabled>Download QR</button>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>

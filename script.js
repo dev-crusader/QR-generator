@@ -81,6 +81,7 @@ generateBtn.onclick = function () {
     qrImage.classList.add("qr-fade-in");
     qrImage.src = url;
     qrImage.style.opacity = 1;
+    qrImage.style.border = "1px solid rgba(128, 128, 128, 0.281)";
     downloadBtn.disabled = false;
   });
 };
