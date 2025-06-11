@@ -11,6 +11,19 @@ const bgTextInput = document.getElementById("bg-color");
 const fgColorInput = document.getElementById("forecolor-pick");
 const fgTextInput = document.getElementById("fore-color");
 
+document.querySelectorAll(".tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document
+      .querySelectorAll(".tab")
+      .forEach((t) => t.classList.remove("active"));
+    document
+      .querySelectorAll(".tab-content")
+      .forEach((c) => c.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.tab).classList.add("active");
+  });
+});
+
 bgColorInput.addEventListener("change", () => {
   bgTextInput.value = bgColorInput.value;
 });
