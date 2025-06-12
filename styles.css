@@ -64,13 +64,30 @@ p {
 
 .tab-content {
   display: none;
-  padding: 1em;
-  margin-bottom: 1em;
+  padding: 1em 1em 0em;
 }
 
 .tab-content.active {
   display: block;
   background-color: #ffffffff;
+}
+
+.shared-options {
+  background-color: white;
+  padding: 0em 1em;
+}
+
+.alert-msg {
+  color: red;
+  font-weight: bold;
+  font-size: 0.6em;
+  margin-left: 1em;
+  margin-top: 1em;
+  display: none;
+}
+
+.show {
+  display: block;
 }
 
 .container {
@@ -132,7 +149,7 @@ input::placeholder {
 .button-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 0.5em;
+  margin-top: 1.5em;
 }
 
 #download-btn:disabled {

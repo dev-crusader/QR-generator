@@ -1,6 +1,6 @@
 const generateBtn = document.getElementById("generate-btn");
 const downloadBtn = document.getElementById("download-btn");
-const inputField = document.getElementById("text-input");
+
 const qrImage = document.getElementById("qrImage");
 const fontFamily = "Manrope, Segoe UI, Tahoma, Geneva, Verdana, sans-serif";
 
@@ -10,6 +10,8 @@ const bgColorInput = document.getElementById("bgcolor-pick");
 const bgTextInput = document.getElementById("bg-color");
 const fgColorInput = document.getElementById("forecolor-pick");
 const fgTextInput = document.getElementById("fore-color");
+const alertTxt = document.getElementById("alert-msg");
+const err = "* ";
 
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => {
@@ -55,13 +57,20 @@ document.getElementById("generate-btn").addEventListener("click", () => {
     const url = document.getElementById("text-input").value.trim();
     text = url;
     if (!text) {
-      alert("Please enter some text or URL");
+      showError(err + "Please enter some text or URL");
+      document.getElementById("text-input").style.border = "1px solid red";
+      // alert("Please enter some text or URL");
       return;
     }
   } else if (activeTab === "wifi") {
     const ssid = document.getElementById("wifi-ssid").value;
     const pass = document.getElementById("wifi-pass").value;
     const security = document.getElementById("wifi-security").value;
+    console.log(security);
+    if (!ssid) {
+      alert("SSID required!");
+      return;
+    }
     if (security) {
       text = `WIFI:T:${security};S:${ssid};P:${pass};;`;
     } else {
@@ -72,6 +81,11 @@ document.getElementById("generate-btn").addEventListener("click", () => {
     const phone = document.getElementById("vcard-phone").value;
     const email = document.getElementById("vcard-email").value;
     const address = document.getElementById("vcard-address").value;
+    let isValid = validateVcard(name, phone, email, address);
+    if (isValid !== "") {
+      alert(isValid);
+      return;
+    }
     text = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nADR;TYPE=HOME:;;${address}\nTEL;TYPE=CELL:${phone}\nEMAIL:${email}\nEND:VCARD`;
   }
 
@@ -139,6 +153,16 @@ function validateInput(ele, minm) {
   return "";
 }
 
+function validateVcard(name, phone, email, address) {
+  if (name === "" && phone === "" && email === "" && address === "") {
+    return "Missing vcard info";
+  }
+  if (phone != "" && isNaN(phone)) {
+    return "Not a number";
+  }
+  return "";
+}
+
 downloadBtn.onclick = () => {
   if (window.generatedImageDataUrl) {
     const link = document.createElement("a");
@@ -149,3 +173,23 @@ downloadBtn.onclick = () => {
     alert("Please generate the QR code first.");
   }
 };
+
+function resetCanvas() {
+  fgTextInput.value = null;
+  bgTextInput.value = null;
+  fgColorInput.value = "#000000";
+  bgColorInput.value = "#ffffff";
+  size.value = null;
+  margin.value = null;
+  qrImage.src = "./images/default.svg";
+  qrImage.style.opacity = 0.1;
+}
+
+function showError(text) {
+  alertTxt.textContent = text;
+  alertTxt.classList.add("show");
+}
+
+function hideError() {
+  alertTxt.classList.remove("show");
+}

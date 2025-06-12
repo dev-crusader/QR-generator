@@ -45,31 +45,6 @@
             placeholder="https://example.com or Text here.."
           /><br />
           <div id="footnote">Your QR will open this URL or text</div>
-
-          <div class="shared-options">
-            <div class="color-section">
-              <p class="color-label">Background Color:</p>
-              <div class="back-section">
-                <input type="text" id="bg-color" placeholder="#000000" />
-                <input type="color" id="bgcolor-pick" value="#ffffff" />
-              </div>
-
-              <p class="color-label">Foreground Color:</p>
-              <div class="fore-section">
-                <input type="text" id="fore-color" placeholder="#ffffff" />
-                <input type="color" id="forecolor-pick" value="#000000" />
-              </div>
-            </div>
-            <br />
-
-            <div class="size-inputs">
-              <label for="size-input">Size:</label>
-              <input type="text" id="size-input" placeholder="200px" />
-              <label for="margin-input">Margin:</label>
-              <input type="text" id="margin-input" placeholder="2" />
-            </div>
-            <br />
-          </div>
         </div>
 
         <!-- Content for Wi-Fi -->
@@ -84,32 +59,8 @@
             <option value="WPA">WPA/WPA2</option>
             <option value="WEP">WEP</option>
           </select>
-
-          <div class="shared-options">
-            <div class="color-section">
-              <p class="color-label">Background Color:</p>
-              <div class="back-section">
-                <input type="text" id="bg-color" placeholder="#000000" />
-                <input type="color" id="bgcolor-pick" value="#ffffff" />
-              </div>
-
-              <p class="color-label">Foreground Color:</p>
-              <div class="fore-section">
-                <input type="text" id="fore-color" placeholder="#ffffff" />
-                <input type="color" id="forecolor-pick" value="#000000" />
-              </div>
-            </div>
-            <br />
-
-            <div class="size-inputs">
-              <label for="size-input">Size:</label>
-              <input type="text" id="size-input" placeholder="200px" />
-              <label for="margin-input">Margin:</label>
-              <input type="text" id="margin-input" placeholder="2" />
-            </div>
-            <br />
-          </div>
         </div>
+
         <!-- Content for V-card -->
         <div id="vcard" class="tab-content">
           <label>Name:</label><br />
@@ -120,32 +71,34 @@
           <input type="text" id="vcard-phone" placeholder="Phone" /><br />
           <label>Email:</label><br />
           <input type="text" id="vcard-email" placeholder="Email" />
-
-          <div class="shared-options">
-            <div class="color-section">
-              <p class="color-label">Background Color:</p>
-              <div class="back-section">
-                <input type="text" id="bg-color" placeholder="#000000" />
-                <input type="color" id="bgcolor-pick" value="#ffffff" />
-              </div>
-
-              <p class="color-label">Foreground Color:</p>
-              <div class="fore-section">
-                <input type="text" id="fore-color" placeholder="#ffffff" />
-                <input type="color" id="forecolor-pick" value="#000000" />
-              </div>
-            </div>
-            <br />
-
-            <div class="size-inputs">
-              <label for="size-input">Size:</label>
-              <input type="text" id="size-input" placeholder="200px" />
-              <label for="margin-input">Margin:</label>
-              <input type="text" id="margin-input" placeholder="2" />
-            </div>
-            <br />
-          </div>
         </div>
+
+        <div class="shared-options">
+          <div class="color-section">
+            <p class="color-label">Background Color:</p>
+            <div class="back-section">
+              <input type="text" id="bg-color" placeholder="#000000" />
+              <input type="color" id="bgcolor-pick" value="#ffffff" />
+            </div>
+
+            <p class="color-label">Foreground Color:</p>
+            <div class="fore-section">
+              <input type="text" id="fore-color" placeholder="#ffffff" />
+              <input type="color" id="forecolor-pick" value="#000000" />
+            </div>
+          </div>
+          <br />
+
+          <div class="size-inputs">
+            <label for="size-input">Size:</label>
+            <input type="text" id="size-input" placeholder="200px" />
+            <label for="margin-input">Margin:</label>
+            <input type="text" id="margin-input" placeholder="2" />
+          </div>
+          <div class="alert-msg" id="alert-msg"></div>
+          <br />
+        </div>
+
         <div class="button-wrapper">
           <button class="button" id="generate-btn">Generate QR Code</button>
         </div>
