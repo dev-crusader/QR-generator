@@ -13,6 +13,9 @@ const fgTextInput = document.getElementById("fore-color");
 const alertTxt = document.getElementById("alert-msg");
 const err = "* ";
 
+const ssid = document.getElementById("wifi-ssid");
+const pass = document.getElementById("wifi-pass");
+
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => {
     document
@@ -24,29 +27,8 @@ document.querySelectorAll(".tab").forEach((tab) => {
     tab.classList.add("active");
     document.getElementById(tab.dataset.tab).classList.add("active");
     resetCanvas();
+    hideError();
   });
-});
-
-bgColorInput.addEventListener("change", () => {
-  bgTextInput.value = bgColorInput.value;
-});
-
-fgColorInput.addEventListener("change", () => {
-  fgTextInput.value = fgColorInput.value;
-});
-
-size.addEventListener("blur", () => {
-  const message = validateInput(size, 100);
-  if (message) {
-    alert(message);
-  }
-});
-
-margin.addEventListener("blur", () => {
-  const message = validateInput(margin, 0);
-  if (message) {
-    alert(message);
-  }
 });
 
 document.getElementById("generate-btn").addEventListener("click", () => {
@@ -54,27 +36,31 @@ document.getElementById("generate-btn").addEventListener("click", () => {
   let text = "";
 
   if (activeTab === "url") {
-    const url = document.getElementById("text-input").value.trim();
-    text = url;
+    const url = document.getElementById("text-input");
+    text = url.value.trim();
     if (!text) {
-      showError(err + "Please enter some text or URL");
-      document.getElementById("text-input").style.border = "1px solid red";
-      // alert("Please enter some text or URL");
+      showError(url, err + "Please enter some text or URL");
+      errorEffect();
       return;
     }
   } else if (activeTab === "wifi") {
-    const ssid = document.getElementById("wifi-ssid").value;
-    const pass = document.getElementById("wifi-pass").value;
+    let ssidVal = ssid.value;
+    let passVal = pass.value;
     const security = document.getElementById("wifi-security").value;
-    console.log(security);
-    if (!ssid) {
-      alert("SSID required!");
+    if (!ssidVal) {
+      showError(ssid, err + "SSID required!");
+      errorEffect();
+      return;
+    }
+    if (security && !passVal) {
+      showError(pass, err + "Password required!");
+      errorEffect();
       return;
     }
     if (security) {
-      text = `WIFI:T:${security};S:${ssid};P:${pass};;`;
+      text = `WIFI:T:${security};S:${ssidVal};P:${passVal};;`;
     } else {
-      text = `WIFI:S:${ssid};;`;
+      text = `WIFI:S:${ssidVal};;`;
     }
   } else if (activeTab === "vcard") {
     const name = document.getElementById("vcard-name").value;
@@ -83,7 +69,8 @@ document.getElementById("generate-btn").addEventListener("click", () => {
     const address = document.getElementById("vcard-address").value;
     let isValid = validateVcard(name, phone, email, address);
     if (isValid !== "") {
-      alert(isValid);
+      showError(null, err + isValid);
+      errorEffect();
       return;
     }
     text = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nADR;TYPE=HOME:;;${address}\nTEL;TYPE=CELL:${phone}\nEMAIL:${email}\nEND:VCARD`;
@@ -92,12 +79,14 @@ document.getElementById("generate-btn").addEventListener("click", () => {
   defaultInit();
   let sizeValid = validateInput(size, 100);
   if (sizeValid !== "") {
-    alert(sizeValid);
+    showError(size, err + sizeValid);
+    errorEffect();
     return;
   }
   let marginValid = validateInput(margin, 0);
   if (marginValid !== "") {
-    alert(marginValid);
+    showError(margin, err + marginValid);
+    errorEffect();
     return;
   }
 
@@ -121,6 +110,7 @@ document.getElementById("generate-btn").addEventListener("click", () => {
     qrImage.style.opacity = 1;
     qrImage.style.border = "1px solid rgba(128, 128, 128, 0.281)";
     downloadBtn.disabled = false;
+    hideError();
   });
 });
 
@@ -155,7 +145,7 @@ function validateInput(ele, minm) {
 
 function validateVcard(name, phone, email, address) {
   if (name === "" && phone === "" && email === "" && address === "") {
-    return "Missing vcard info";
+    return "Atlease one info required !";
   }
   if (phone != "" && isNaN(phone)) {
     return "Not a number";
@@ -174,6 +164,79 @@ downloadBtn.onclick = () => {
   }
 };
 
+//Event listener functions
+
+bgColorInput.addEventListener("change", () => {
+  bgTextInput.value = bgColorInput.value;
+});
+
+fgColorInput.addEventListener("change", () => {
+  fgTextInput.value = fgColorInput.value;
+});
+
+size.addEventListener("blur", () => {
+  const message = validateInput(size, 100);
+  if (message) {
+    showError(size, err + message);
+  } else {
+    hideError();
+  }
+});
+
+size.addEventListener("input", () => {
+  if (size.value.trim() !== "") {
+    size.classList.remove("error");
+    hideError();
+  }
+});
+
+margin.addEventListener("blur", () => {
+  const message = validateInput(margin, 0);
+  if (message) {
+    showError(margin, err + message);
+  } else {
+    hideError();
+  }
+});
+
+margin.addEventListener("input", () => {
+  if (margin.value.trim() !== "") {
+    margin.classList.remove("error");
+    hideError();
+  }
+});
+
+const textInput = document.getElementById("text-input");
+textInput.addEventListener("input", () => {
+  if (textInput.value.trim() !== "") {
+    textInput.classList.remove("error");
+    hideError();
+  }
+});
+
+ssid.addEventListener("input", () => {
+  if (ssid.value.trim() !== "") {
+    ssid.classList.remove("error");
+    hideError();
+  }
+});
+
+pass.addEventListener("input", () => {
+  if (pass.value.trim() !== "") {
+    pass.classList.remove("error");
+    hideError();
+  }
+});
+
+const wifiSecuritySelect = document.getElementById("wifi-security");
+wifiSecuritySelect.addEventListener("change", () => {
+  if (wifiSecuritySelect.value === "") {
+    pass.value = "";
+    pass.classList.remove("error");
+    hideError();
+  }
+});
+
 function resetCanvas() {
   fgTextInput.value = null;
   bgTextInput.value = null;
@@ -181,15 +244,35 @@ function resetCanvas() {
   bgColorInput.value = "#ffffff";
   size.value = null;
   margin.value = null;
-  qrImage.src = "./images/default.svg";
-  qrImage.style.opacity = 0.1;
+  textInput.classList.remove("error");
+  size.classList.remove("error");
+  margin.classList.remove("error");
+  ssid.classList.remove("error");
 }
 
-function showError(text) {
+function showError(element, text) {
   alertTxt.textContent = text;
   alertTxt.classList.add("show");
+  if (element) {
+    element.classList.add("error");
+  }
 }
 
 function hideError() {
   alertTxt.classList.remove("show");
+}
+
+function errorEffect() {
+  generateBtn.classList.remove("buzz");
+
+  void generateBtn.offsetWidth;
+  generateBtn.classList.add("buzz");
+
+  generateBtn.addEventListener(
+    "animationend",
+    () => {
+      button.classList.remove("buzz");
+    },
+    { once: true }
+  );
 }
