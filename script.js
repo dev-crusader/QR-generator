@@ -4,6 +4,7 @@ const downloadBtn = document.getElementById("download-btn");
 const qrImage = document.getElementById("qrImage");
 const fontFamily = "Manrope, Segoe UI, Tahoma, Geneva, Verdana, sans-serif";
 
+const textInput = document.getElementById("text-input");
 const size = document.getElementById("size-input");
 const margin = document.getElementById("margin-input");
 const bgColorInput = document.getElementById("bgcolor-pick");
@@ -166,67 +167,97 @@ downloadBtn.onclick = () => {
 
 //Event listener functions
 
-bgColorInput.addEventListener("change", () => {
+bgColorInput.addEventListener("input", () => {
   bgTextInput.value = bgColorInput.value;
 });
 
-fgColorInput.addEventListener("change", () => {
+fgColorInput.addEventListener("input", () => {
   fgTextInput.value = fgColorInput.value;
 });
 
-size.addEventListener("blur", () => {
-  const message = validateInput(size, 100);
-  if (message) {
-    showError(size, err + message);
+// Remove error class on inserting input
+document.querySelectorAll('input[type="text"]').forEach((input) => {
+  input.addEventListener("input", (e) => {
+    if (e.target.id === "bg-color" || e.target.id === "fore-color") {
+      return;
+    }
+
+    if (e.target.value.trim() !== "") {
+      e.target.classList.remove("error");
+      hideError();
+    }
+  });
+});
+
+document
+  .querySelectorAll('.size-inputs input[type="text"]')
+  .forEach((input) => {
+    input.addEventListener("blur", (e) => {
+      let minm = 0;
+      minm = e.target.id === "size-input" ? 100 : 0;
+      const message = validateInput(e.target, minm);
+      if (message) {
+        showError(e.target, err + message);
+      } else {
+        e.target.classList.remove("error");
+        hideError();
+      }
+    });
+  });
+
+document
+  .querySelectorAll('.color-section input[type="text"]')
+  .forEach((input) => {
+    input.addEventListener("blur", (e) => {
+      colorAnalyzer(e);
+    });
+  });
+
+function colorAnalyzer(e) {
+  let val = e.target.value.trim();
+  if (val === "") {
+    if (e.target.id === "bg-color") {
+      document.getElementById("bgcolor-pick").value = "#ffffff";
+    }
+    if (e.target.id === "fore-color") {
+      document.getElementById("forecolor-pick").value = "#000000";
+    }
+    e.target.classList.remove("error");
+    hideError();
+    return;
+  }
+
+  if (val.startsWith("#")) {
+    val = val.substring(1);
+  }
+
+  const hexRegex = /^([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
+
+  if (hexRegex.test(val)) {
+    if (val.length == 3) {
+      const r = val[0];
+      const g = val[1];
+      const b = val[2];
+      val = `${r}${r}${g}${g}${b}${b}`;
+    }
+    const hexColor = `#${val}`;
+    const testDiv = document.createElement("div");
+    testDiv.style.color = hexColor;
+
+    if (testDiv.style.color !== "") {
+      e.target.value = hexColor;
+      if (e.target.id === "bg-color") {
+        document.getElementById("bgcolor-pick").value = hexColor;
+      } else if (e.target.id === "fore-color") {
+        document.getElementById("forecolor-pick").value = hexColor;
+      }
+      e.target.classList.remove("error");
+      hideError();
+    }
   } else {
-    hideError();
+    showError(e.target, err + "Invalid color");
   }
-});
-
-size.addEventListener("input", () => {
-  if (size.value.trim() !== "") {
-    size.classList.remove("error");
-    hideError();
-  }
-});
-
-margin.addEventListener("blur", () => {
-  const message = validateInput(margin, 0);
-  if (message) {
-    showError(margin, err + message);
-  } else {
-    hideError();
-  }
-});
-
-margin.addEventListener("input", () => {
-  if (margin.value.trim() !== "") {
-    margin.classList.remove("error");
-    hideError();
-  }
-});
-
-const textInput = document.getElementById("text-input");
-textInput.addEventListener("input", () => {
-  if (textInput.value.trim() !== "") {
-    textInput.classList.remove("error");
-    hideError();
-  }
-});
-
-ssid.addEventListener("input", () => {
-  if (ssid.value.trim() !== "") {
-    ssid.classList.remove("error");
-    hideError();
-  }
-});
-
-pass.addEventListener("input", () => {
-  if (pass.value.trim() !== "") {
-    pass.classList.remove("error");
-    hideError();
-  }
-});
+}
 
 const wifiSecuritySelect = document.getElementById("wifi-security");
 wifiSecuritySelect.addEventListener("change", () => {
@@ -248,6 +279,7 @@ function resetCanvas() {
   size.classList.remove("error");
   margin.classList.remove("error");
   ssid.classList.remove("error");
+  pass.classList.remove("error");
 }
 
 function showError(element, text) {
@@ -271,7 +303,7 @@ function errorEffect() {
   generateBtn.addEventListener(
     "animationend",
     () => {
-      button.classList.remove("buzz");
+      generateBtn.classList.remove("buzz");
     },
     { once: true }
   );
