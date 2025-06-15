@@ -60,18 +60,16 @@ document.getElementById("generate-btn").addEventListener("click", () => {
     if (security) {
       text = `WIFI:T:${security};S:${ssidVal};P:${passVal};;`;
     } else {
+      document.getElementById("wifi-pass").value = "";
       text = `WIFI:S:${ssidVal};;`;
     }
   } else if (activeTab === "vcard") {
-    const name = document.getElementById("vcard-name").value;
-    const phone = document.getElementById("vcard-phone").value;
-    const email = document.getElementById("vcard-email").value;
-    const address = document.getElementById("vcard-address").value;
-    let isValid = validateVcard(name, phone, email, address);
-    if (isValid !== "") {
-      errorMap.set("vcard", isValid);
-    }
-    text = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nADR;TYPE=HOME:;;${address}\nTEL;TYPE=CELL:${phone}\nEMAIL:${email}\nEND:VCARD`;
+    const name = document.getElementById("vcard-name");
+    const phone = document.getElementById("vcard-phone");
+    const email = document.getElementById("vcard-email");
+    const address = document.getElementById("vcard-address");
+    validateVcard(name, phone, email);
+    text = `BEGIN:VCARD\nVERSION:3.0\nFN:${name.value}\nADR;TYPE=HOME:;;${address.value}\nTEL;TYPE=CELL:${phone.value}\nEMAIL:${email.value}\nEND:VCARD`;
   }
 
   defaultInit();
@@ -149,18 +147,19 @@ function validateInput(ele, minm, maxm) {
   return "";
 }
 
-function validateVcard(name, phone, email, address) {
-  if (name === "" && phone === "" && email === "" && address === "") {
-    return "Atleast one info required!";
+function validateVcard(name, phone, email) {
+  if (name.value === "") {
+    errorMap.set(name, "Name is a required field");
   }
-  if (phone != "" && isNaN(phone)) {
-    return "Number expected for phone";
+  if (phone.value === "") {
+    errorMap.set(phone, "Phone is a required field");
   }
-
-  if (!isValidEmail(email)) {
-    return "Invalid email format.";
+  if (phone.value != "" && isNaN(phone.value)) {
+    errorMap.set(phone, "Number expected for phone");
   }
-  return "";
+  if (email.value !== "" && !isValidEmail(email.value)) {
+    errorMap.set(email, "Invalid email format");
+  }
 }
 
 function isValidEmail(email) {
@@ -186,6 +185,9 @@ document
   .forEach((input) => {
     input.addEventListener("input", (e) => {
       if (e.target.value.trim() !== "") {
+        hideError(e.target);
+      }
+      if (e.target.id === "vcard-email" && e.target.value.trim() === "") {
         hideError(e.target);
       }
     });
@@ -300,13 +302,9 @@ function resetCanvas() {
 
 function showError() {
   const errorMsg = [];
-  let c = 0;
   for (const [key, value] of errorMap) {
     errorMsg.push("* " + value);
-    if (key !== "vcard") {
-      key.classList.add("error");
-    }
-    c++;
+    key.classList.add("error");
   }
   if (errorMsg.length == 0) {
     return;
