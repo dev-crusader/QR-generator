@@ -12,11 +12,11 @@ const bgTextInput = document.getElementById("bg-color");
 const fgColorInput = document.getElementById("forecolor-pick");
 const fgTextInput = document.getElementById("fore-color");
 const alertTxt = document.getElementById("alert-msg");
-const err = "* ";
 
 const ssid = document.getElementById("wifi-ssid");
 const pass = document.getElementById("wifi-pass");
 const hasError = false;
+const errorMap = new Map();
 
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => {
@@ -45,23 +45,26 @@ document.getElementById("generate-btn").addEventListener("click", () => {
     const url = document.getElementById("text-input");
     text = url.value.trim();
     if (!text) {
-      showError(url, err + "Please enter some text or URL");
-      errorEffect();
-      return;
+      errorMap.set(url, "Please enter some text or URL");
+      // showError(url, err + "Please enter some text or URL");
+      // errorEffect();
+      // return;
     }
   } else if (activeTab === "wifi") {
     let ssidVal = document.getElementById("wifi-ssid").value;
     let passVal = document.getElementById("wifi-pass").value;
     const security = document.getElementById("wifi-security").value;
     if (!ssidVal) {
-      showError(ssid, err + "SSID required!");
-      errorEffect();
-      return;
+      errorMap.set(ssid, "SSID required!");
+      // showError(ssid, err + "SSID required!");
+      // errorEffect();
+      // return;
     }
     if (security && !passVal) {
-      showError(pass, err + "Password required!");
-      errorEffect();
-      return;
+      errorMap.set(pass, "Password required!");
+      // showError(pass, err + "Password required!");
+      // errorEffect();
+      // return;
     }
     if (security) {
       text = `WIFI:T:${security};S:${ssidVal};P:${passVal};;`;
@@ -75,9 +78,10 @@ document.getElementById("generate-btn").addEventListener("click", () => {
     const address = document.getElementById("vcard-address").value;
     let isValid = validateVcard(name, phone, email, address);
     if (isValid !== "") {
-      showError(null, err + isValid);
-      errorEffect();
-      return;
+      errorMap.set("vcard", isValid);
+      // showError(null, err + isValid);
+      // errorEffect();
+      // return;
     }
     text = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nADR;TYPE=HOME:;;${address}\nTEL;TYPE=CELL:${phone}\nEMAIL:${email}\nEND:VCARD`;
   }
@@ -85,16 +89,28 @@ document.getElementById("generate-btn").addEventListener("click", () => {
   defaultInit();
   let sizeValid = validateInput(size, 100);
   if (sizeValid !== "") {
-    showError(size, err + sizeValid);
-    errorEffect();
-    return;
+    errorMap.set(size, sizeValid);
+    // showError(size, err + sizeValid);
+    // errorEffect();
+    // return;
   }
   let marginValid = validateInput(margin, 0);
   if (marginValid !== "") {
-    showError(margin, err + marginValid);
+    errorMap.set(margin, marginValid);
+    // showError(margin, err + marginValid);
+    // errorEffect();
+    // return;
+  }
+
+  if (errorMap.size !== 0) {
+    console.log(errorMap);
+    showError();
     errorEffect();
     return;
   }
+  // else {
+  //   hideError();
+  // }
 
   const options = {
     color: {
@@ -111,7 +127,6 @@ document.getElementById("generate-btn").addEventListener("click", () => {
     fadeIn();
     qrImage.src = url;
     downloadBtn.disabled = false;
-    hideError();
   });
 });
 
@@ -138,13 +153,11 @@ function defaultInit() {
   }
 }
 
-function colorCheck(value) {}
-
 function validateInput(ele, minm, maxm) {
   const element = ele.value.trim();
   let inp = minm == 0 ? "Margin" : "Size";
   if (element != "" && isNaN(element)) {
-    return `Please enter a valid number for ${inp}.`;
+    return `Please enter a valid number for ${inp}`;
   }
   let val = parseInt(element);
   if (val < minm) {
@@ -188,20 +201,21 @@ downloadBtn.onclick = () => {
   }
 };
 
-//Event listener functions
+// Event listener functions
 // Remove error class on inserting input
-document.querySelectorAll('input[type="text"]').forEach((input) => {
-  input.addEventListener("input", (e) => {
-    if (e.target.id === "bg-color" || e.target.id === "fore-color") {
-      return;
-    }
+document
+  .querySelectorAll('.tab-content input[type="text"]')
+  .forEach((input) => {
+    input.addEventListener("input", (e) => {
+      if (e.target.id === "bg-color" || e.target.id === "fore-color") {
+        return;
+      }
 
-    if (e.target.value.trim() !== "") {
-      e.target.classList.remove("error");
-      hideError();
-    }
+      if (e.target.value.trim() !== "") {
+        hideError(e.target);
+      }
+    });
   });
-});
 
 document
   .querySelectorAll('.color-section input[type="color"]')
@@ -209,13 +223,12 @@ document
     input.addEventListener("input", (e) => {
       if (e.target.id === "forecolor-pick") {
         document.getElementById("fore-color").value = e.target.value;
-        document.getElementById("fore-color").classList.remove("error");
+        hideError(fgTextInput);
       }
       if (e.target.id === "bgcolor-pick") {
         document.getElementById("bg-color").value = e.target.value;
-        document.getElementById("bg-color").classList.remove("error");
+        hideError(bgTextInput);
       }
-      hideError();
     });
   });
 
@@ -228,10 +241,10 @@ document
       let maxm = e.target.id === "size-input" ? 10000 : 10;
       const message = validateInput(e.target, minm, maxm);
       if (message) {
-        showError(e.target, err + message);
+        errorMap.set(e.target, message);
+        showError();
       } else {
-        e.target.classList.remove("error");
-        hideError();
+        hideError(e.target);
       }
     });
   });
@@ -253,8 +266,7 @@ function colorAnalyzer(e) {
     if (e.target.id === "fore-color") {
       document.getElementById("forecolor-pick").value = "#000000";
     }
-    e.target.classList.remove("error");
-    hideError();
+    hideError(e.target);
     return;
   }
 
@@ -282,11 +294,12 @@ function colorAnalyzer(e) {
       } else if (e.target.id === "fore-color") {
         document.getElementById("forecolor-pick").value = hexColor;
       }
-      e.target.classList.remove("error");
-      hideError();
+      hideError(e.target);
     }
   } else {
-    showError(e.target, err + "Invalid color");
+    let color = e.target.id === "bg-color" ? "background" : "foreground";
+    errorMap.set(e.target, `Invalid ${color} color`);
+    showError();
   }
 }
 
@@ -294,8 +307,7 @@ const wifiSecuritySelect = document.getElementById("wifi-security");
 wifiSecuritySelect.addEventListener("change", () => {
   if (wifiSecuritySelect.value === "") {
     pass.value = "";
-    pass.classList.remove("error");
-    hideError();
+    hideError(pass);
   }
 });
 
@@ -304,22 +316,41 @@ function resetCanvas() {
   bgColorInput.value = "#ffffff";
   document.querySelectorAll('input[type="text"]').forEach((input) => {
     input.value = null;
-    input.classList.remove("error");
+    hideError(input);
   });
-  hideError();
+  //remove error from map
   qrImage.src = "./images/qr-default.svg";
 }
 
-function showError(element, text) {
+function showError() {
+  const errorMsg = [];
+  let c = 0;
+  for (const [key, value] of errorMap) {
+    errorMsg.push("* " + value);
+    if (key !== "vcard") {
+      key.classList.add("error");
+    }
+    c++;
+  }
+  if (errorMsg.length == 0) {
+    return;
+  }
+  const text = errorMsg.join("\n");
+  console.log(text);
+  console.log(c);
   alertTxt.textContent = text;
   alertTxt.classList.add("show");
-  if (element) {
-    element.classList.add("error");
-  }
 }
 
-function hideError() {
+function hideError(element) {
+  if (element) {
+    errorMap.delete(element);
+    element.classList.remove("error");
+  }
   alertTxt.classList.remove("show");
+  if (errorMap.size > 0) {
+    showError();
+  }
 }
 
 function errorEffect() {

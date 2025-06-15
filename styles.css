@@ -241,6 +241,10 @@ label {
   margin: 0.2em 0em;
 }
 
+.alert-msg {
+  white-space: pre-line;
+}
+
 .capsule {
   display: flex;
   flex-direction: column;
