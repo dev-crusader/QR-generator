@@ -46,9 +46,6 @@ document.getElementById("generate-btn").addEventListener("click", () => {
     text = url.value.trim();
     if (!text) {
       errorMap.set(url, "Please enter some text or URL");
-      // showError(url, err + "Please enter some text or URL");
-      // errorEffect();
-      // return;
     }
   } else if (activeTab === "wifi") {
     let ssidVal = document.getElementById("wifi-ssid").value;
@@ -56,15 +53,9 @@ document.getElementById("generate-btn").addEventListener("click", () => {
     const security = document.getElementById("wifi-security").value;
     if (!ssidVal) {
       errorMap.set(ssid, "SSID required!");
-      // showError(ssid, err + "SSID required!");
-      // errorEffect();
-      // return;
     }
     if (security && !passVal) {
       errorMap.set(pass, "Password required!");
-      // showError(pass, err + "Password required!");
-      // errorEffect();
-      // return;
     }
     if (security) {
       text = `WIFI:T:${security};S:${ssidVal};P:${passVal};;`;
@@ -79,9 +70,6 @@ document.getElementById("generate-btn").addEventListener("click", () => {
     let isValid = validateVcard(name, phone, email, address);
     if (isValid !== "") {
       errorMap.set("vcard", isValid);
-      // showError(null, err + isValid);
-      // errorEffect();
-      // return;
     }
     text = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nADR;TYPE=HOME:;;${address}\nTEL;TYPE=CELL:${phone}\nEMAIL:${email}\nEND:VCARD`;
   }
@@ -90,27 +78,17 @@ document.getElementById("generate-btn").addEventListener("click", () => {
   let sizeValid = validateInput(size, 100);
   if (sizeValid !== "") {
     errorMap.set(size, sizeValid);
-    // showError(size, err + sizeValid);
-    // errorEffect();
-    // return;
   }
   let marginValid = validateInput(margin, 0);
   if (marginValid !== "") {
     errorMap.set(margin, marginValid);
-    // showError(margin, err + marginValid);
-    // errorEffect();
-    // return;
   }
 
   if (errorMap.size !== 0) {
-    console.log(errorMap);
     showError();
     errorEffect();
     return;
   }
-  // else {
-  //   hideError();
-  // }
 
   const options = {
     color: {
@@ -207,10 +185,6 @@ document
   .querySelectorAll('.tab-content input[type="text"]')
   .forEach((input) => {
     input.addEventListener("input", (e) => {
-      if (e.target.id === "bg-color" || e.target.id === "fore-color") {
-        return;
-      }
-
       if (e.target.value.trim() !== "") {
         hideError(e.target);
       }
@@ -316,9 +290,11 @@ function resetCanvas() {
   bgColorInput.value = "#ffffff";
   document.querySelectorAll('input[type="text"]').forEach((input) => {
     input.value = null;
-    hideError(input);
+    input.classList.remove("error");
   });
   //remove error from map
+  alertTxt.classList.remove("show");
+  errorMap.clear();
   qrImage.src = "./images/qr-default.svg";
 }
 
@@ -336,8 +312,6 @@ function showError() {
     return;
   }
   const text = errorMsg.join("\n");
-  console.log(text);
-  console.log(c);
   alertTxt.textContent = text;
   alertTxt.classList.add("show");
 }
