@@ -69,12 +69,10 @@ p {
 
 .tab-content.active {
   display: block;
-  /* background-color: #ffffffff; */
   background-color: #fffcfc;
 }
 
 .shared-options {
-  /* background-color: white; */
   background-color: #fffcfc;
   padding: 0em 1em;
 }
