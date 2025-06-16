@@ -57,7 +57,7 @@ p {
   font-size: 0.8em;
 }
 .tab.active {
-  background: #ffffffcb;
+  background-color: #fffcfc;
   border: none;
   font-weight: bold;
 }
@@ -69,11 +69,13 @@ p {
 
 .tab-content.active {
   display: block;
-  background-color: #ffffffff;
+  /* background-color: #ffffffff; */
+  background-color: #fffcfc;
 }
 
 .shared-options {
-  background-color: white;
+  /* background-color: white; */
+  background-color: #fffcfc;
   padding: 0em 1em;
 }
 
