@@ -29,7 +29,7 @@ p {
   display: flex;
   flex-direction: row;
   margin: 5% 10%;
-  background-color: rgba(220, 239, 231, 0.707);
+  background-color: rgba(234, 250, 243, 0.707);
   transition: background-color 0.5s ease;
   border: 0.5px solid #d8d8d8;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -51,7 +51,7 @@ p {
   padding: 0.3em 1em;
   border: 1px solid #cccccc7f;
   border-bottom: none;
-  background: rgba(220, 239, 231, 0.6);
+  background: rgba(234, 250, 243, 0.707);
   margin-right: 0.5em;
   font-size: 0.8em;
 }
