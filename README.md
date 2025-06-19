@@ -1,6 +1,6 @@
 # QR Code Generator App
 
-**QR Card Generator** is a user-friendly web application that allows you to generate customized QR codes for various data types including text, URLs, Wi-Fi credentials, and vCards. Whether you're sharing contact info, Wi-Fi details, or simple text, this app makes it easy to create visually appealing QR codes with customizable colors and sizes.
+**QR Generator** is a user-friendly web application that allows you to generate customized QR codes for various data types, including text, URLs, Wi-Fi credentials, and vCards. Whether you're sharing contact info, Wi-Fi details, or simple text, this app makes it easy to create visually appealing QR codes with customizable colors and sizes.
 
 ---
 
